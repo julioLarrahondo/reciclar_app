@@ -1,0 +1,23 @@
+{
+  "appName": "Aplicación de Reciclaje",
+  "welcome": "¡Bienvenido a la Aplicación de Reciclaje!",
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "button": "Iniciar Sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "home": {
+    "greeting": "¡Hola, {{name}}!",
+    "points": "Tienes {{points}} puntos."
+  },
+  "recycling": {
+    "title": "Opciones de Reciclaje",
+    "plastic": "Plástico",
+    "glass": "Vidrio",
+    "metal": "Metal",
+    "paper": "Papel"
+  }
+}
+

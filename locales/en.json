@@ -1,0 +1,23 @@
+{
+  "appName": "Recycling App",
+  "welcome": "Welcome to the Recycling App!",
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "button": "Log In",
+    "forgotPassword": "Forgot Password?"
+  },
+  "home": {
+    "greeting": "Hello, {{name}}!",
+    "points": "You have {{points}} points."
+  },
+  "recycling": {
+    "title": "Recycling Options",
+    "plastic": "Plastic",
+    "glass": "Glass",
+    "metal": "Metal",
+    "paper": "Paper"
+  }
+}
+
