@@ -1,6 +1,11 @@
 {
   "appName": "Recycling App",
   "welcome": "Welcome to the Recycling App!",
+  "start": "start",
+  "recycle": "recycle",
+  "maps": "maps",
+  "more": "more",
+  
   "login": {
     "title": "Login",
     "email": "Email",
