@@ -22,7 +22,9 @@
     "plastic": "Plastic",
     "glass": "Glass",
     "metal": "Metal",
-    "paper": "Paper"
+    "paper": "Paper",
+    "record": "recycling record",
+    "quantity":"quantity in kg"
   }
 }
 

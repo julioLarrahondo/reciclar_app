@@ -22,7 +22,11 @@
     "plastic": "Plástico",
     "glass": "Vidrio",
     "metal": "Metal",
-    "paper": "Papel"
+    "paper": "Papel",
+    "record": "Registro de reciclaje",
+    "quantity":"cantidad en kg"
+    
+    
   }
 }
 
