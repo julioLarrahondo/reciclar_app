@@ -1,13 +1,16 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/next';
 
+// Open or create the database
+const openDatabase = async () => {
+  return await SQLite.openDatabaseAsync('recyclingApp.db');
+};
 
-// Abrir o crear la base de datos
-const db = await SQLite.openDatabaseAsync('recyclingApp.db')
-
-// crear las tablas
-export const setupDatabase = () => {
-  db.withTransactionSync(tx => {
-    tx.executeSql(`
+// Create the tables
+export const setupDatabase = async () => {
+  const db = await openDatabase();
+  
+  try {
+    await db.execAsync(`
       CREATE TABLE IF NOT EXISTS usuarios (
         id_usuario TEXT PRIMARY KEY NOT NULL,
         nombres TEXT NOT NULL,
@@ -23,9 +26,7 @@ export const setupDatabase = () => {
         fecha_registro TEXT NOT NULL,
         tipo_usuario TEXT
       );
-    `);
 
-    tx.executeSql(`
       CREATE TABLE IF NOT EXISTS perfil_usuario (
         id_perfil INTEGER PRIMARY KEY AUTOINCREMENT,
         id_usuario TEXT NOT NULL,
@@ -37,9 +38,7 @@ export const setupDatabase = () => {
         total_puntos INTEGER,
         FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
       );
-    `);
 
-    tx.executeSql(`
       CREATE TABLE IF NOT EXISTS registro_reciclaje (
         id_registro INTEGER PRIMARY KEY AUTOINCREMENT,
         id_usuario TEXT NOT NULL,
@@ -52,9 +51,7 @@ export const setupDatabase = () => {
         FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
         FOREIGN KEY (id_material) REFERENCES materiales(id_material)
       );
-    `);
 
-    tx.executeSql(`
       CREATE TABLE IF NOT EXISTS materiales (
         id_material INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre_material TEXT NOT NULL,
@@ -63,11 +60,14 @@ export const setupDatabase = () => {
         foto TEXT
       );
     `);
-  }, (error) => {
-    console.log("Error al crear las tablas:", error);
-  }, () => {
+    
     console.log("Tablas creadas con éxito");
-  });
+  } catch (error) {
+    console.error("Error al crear las tablas:", error);
+    throw error;
+  } finally {
+    await db.closeAsync();
+  }
 };
 
-export default db;
+export default openDatabase;

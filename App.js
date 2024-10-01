@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'; // Asegúrate de importar useEffect
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import './services/i18next';
@@ -10,7 +10,8 @@ import Forms from './screens/Forms';
 import MasAplicaciones from './screens/MasAplicaciones';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-//import { setupDatabase } from './database/database';
+import { setupDatabase} from './database/database'; // Importa la función de configuración de la BD
+
 
 const Stack = createNativeStackNavigator();
 
@@ -91,7 +92,11 @@ function MainContent() {
 }
 
 export default function App() {
-  
+  useEffect(() => {
+   setupDatabase();
+ }, []);
+
+
 
   return (
     <NavigationContainer>
