@@ -1,19 +1,23 @@
-import React, { useEffect } from 'react'; // Asegúrate de importar useEffect
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import './services/i18next';
 import { useTranslation } from 'react-i18next';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { setupDatabase } from './database/database';
+
+// Import your screens
+import Login from './screens/Login';
 import Inicio from './screens/Inicio';
 import Reciclar from './screens/Reciclar';
 import Maps from './screens/Maps';
 import Forms from './screens/Forms';
 import MasAplicaciones from './screens/MasAplicaciones';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { setupDatabase} from './database/database'; // Importa la función de configuración de la BD
-
 
 const Stack = createNativeStackNavigator();
+
+
 
 function FooterNavigation() {
   const navigation = useNavigation();
@@ -92,15 +96,27 @@ function MainContent() {
 }
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
-   setupDatabase();
- }, []);
+    setupDatabase();
+  }, []);
 
-
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
 
   return (
     <NavigationContainer>
-      <MainContent />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {isAuthenticated ? (
+          <Stack.Screen name="Main" component={MainContent} />
+        ) : (
+          <Stack.Screen name="Login">
+            {(props) => <Login {...props} onLogin={handleLogin} />}
+          </Stack.Screen>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
