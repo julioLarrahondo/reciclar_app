@@ -22,14 +22,14 @@ const ReciclarScreen = () => {
 
 // Simulación de datos de la tabla Materiales
 const materiales = [
-  { id: '1', Nombre_material: 'Madera', Foto: 'https://acortar.link/7gfOOc', descripcion: 'La madera, un recurso renovable y versátil, puede ser reciclada para reducir la deforestación y disminuir el volumen de residuos en los vertederos' },
-  { id: '2', Nombre_material: 'Acero', Foto: 'https://acortar.link/7gfOOc' },
+  { id: '1', Nombre_material: 'Madera', Foto: 'https://acortar.link/4Jc5UA', descripcion: 'La madera, un recurso renovable y versátil, puede ser reciclada para reducir la deforestación y disminuir el volumen de residuos en los vertederos' },
+  { id: '2', Nombre_material: 'Acero', Foto: 'https://acortar.link/la7eUK' },
   { id: '3', Nombre_material: 'Concreto', Foto: 'https://acortar.link/HojRUS' },
   { id: '4', Nombre_material: 'Vidrio', Foto: 'https://acortar.link/KXAecZ' },
-  { id: '5', Nombre_material: 'Plástico', Foto: 'https://acortar.link/KXAecZ' },
-  { id: '6', Nombre_material: 'Papel', Foto: 'https://acortar.link/KXAecZ' },
-  { id: '7', Nombre_material: 'Aluminio', Foto: 'https://acortar.link/KXAecZ' },
-  { id: '7', Nombre_material: 'Aluminio', Foto: 'https://acortar.link/KXAecZ' },
+  { id: '5', Nombre_material: 'Plástico', Foto: 'https://acortar.link/gnhZC5' },
+  { id: '6', Nombre_material: 'Papel', Foto: 'https://acortar.link/h1Cgjd' },
+  { id: '7', Nombre_material: 'Aluminio', Foto: 'https://acortar.link/q67Ozb' },
+  
 ];
 
 const { width } = Dimensions.get('window');

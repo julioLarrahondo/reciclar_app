@@ -8,6 +8,8 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import axios from 'axios';
 
+
+
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Component({ onLogin }: { onLogin: () => void }) {
@@ -43,15 +45,20 @@ export default function Component({ onLogin }: { onLogin: () => void }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('https://apipyton.onrender.com/api/usuario/all', {
-        email: email,
-        telefono: telefono
+      const response = await axios.post('https://apipyton.onrender.com/auth-basic/login', {
+        email: (email),
+        password:(password)
       });
 
-      if (response.status === 200 && response.data.success) {
+      if (response ) {
+       // const userId = response.data.user.id; 
+       // console.log('Data:', response.data);
+       // console.log(userId);
         onLogin();
+       // console.log('Navegando a Inicio con userId:', userId);
+       // navigation.navigate('Inicio', { userId: userId });
       } else {
-        Alert.alert('Error', 'Incorrect credentials. Please try again.');
+        Alert.alert('Error', 'Incorrect credentials. Please try again.'+ {response});
       }
     } catch (error) {
       console.error('Error during login:', error);
