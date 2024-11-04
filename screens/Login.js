@@ -8,21 +8,18 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import axios from 'axios';
 
-
-
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Component({ onLogin }: { onLogin: () => void }) {
+export default function Component({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const { t } = useTranslation();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: "630915708984-ig6cki2m5ta5n58f41hcakjsciqj9eil.apps.googleusercontent.com",
-    expoClientId: "630915708984-ig6cki2m5ta5n58f41hcakjsciqj9eil.apps.googleusercontent.com",
-    iosClientId: 'TU_IOS_CLIENT_ID', // if using iOS
-    androidClientId: "630915708984-ig6cki2m5ta5n58f41hcakjsciqj9eil.apps.googleusercontent.com", 
+    clientId: '630915708984-ig6cki2m5ta5n58f41hcakjsciqj9eil.apps.googleusercontent.com',
+    expoClientId: '630915708984-ig6cki2m5ta5n58f41hcakjsciqj9eil.apps.googleusercontent.com',
+    androidClientId: '630915708984-ig6cki2m5ta5n58f41hcakjsciqj9eil.apps.googleusercontent.com',
     scopes: ['profile', 'email'],
   });
 
@@ -37,28 +34,25 @@ export default function Component({ onLogin }: { onLogin: () => void }) {
         console.log('User data:', data);
         onLogin();
       })
-      .catch((error) => {
-        console.error('Error fetching user data:', error);
-      });
+      .catch((error) => console.error('Error fetching user data:', error));
     }
   }, [response, onLogin]);
 
   const handleLogin = async () => {
     try {
       const response = await axios.post('https://apipyton.onrender.com/auth-basic/login', {
-        email: (email),
-        password:(password)
+        email,
+        password
       });
 
-      if (response ) {
-       // const userId = response.data.user.id; 
-       // console.log('Data:', response.data);
-       // console.log(userId);
+      if (response.data.user) {
+        const userId = response.data.user.id;
+        console.log('Login successful. User ID:', userId);
+        
         onLogin();
-       // console.log('Navegando a Inicio con userId:', userId);
-       // navigation.navigate('Inicio', { userId: userId });
+        navigation.navigate('Inicio', { userId });
       } else {
-        Alert.alert('Error', 'Incorrect credentials. Please try again.'+ {response});
+        Alert.alert('Error', 'Incorrect credentials or missing user ID. Please try again.');
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -72,10 +66,7 @@ export default function Component({ onLogin }: { onLogin: () => void }) {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/logoT.png')}
-        style={styles.logo}
-      />
+      <Image source={require('../assets/logoT.png')} style={styles.logo} />
       <Text style={styles.title}>{t('appName')}</Text>
       <Text style={styles.subtitle}>Log in to start recycling</Text>
       

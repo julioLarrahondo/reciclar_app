@@ -1,11 +1,11 @@
 import * as SQLite from 'expo-sqlite/next';
 
-// Open or create the database
+// Abrir o crear la base de datos
 const openDatabase = async () => {
   return await SQLite.openDatabaseAsync('recyclingApp.db');
 };
 
-// Create the tables
+// Crear las tablas
 export const setupDatabase = async () => {
   const db = await openDatabase();
   
@@ -26,7 +26,7 @@ export const setupDatabase = async () => {
         fecha_registro TEXT NOT NULL,
         tipo_usuario TEXT
       );
-
+      
       CREATE TABLE IF NOT EXISTS perfil_usuario (
         id_perfil INTEGER PRIMARY KEY AUTOINCREMENT,
         id_usuario TEXT NOT NULL,
@@ -38,7 +38,7 @@ export const setupDatabase = async () => {
         total_puntos INTEGER,
         FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
       );
-
+      
       CREATE TABLE IF NOT EXISTS registro_reciclaje (
         id_registro INTEGER PRIMARY KEY AUTOINCREMENT,
         id_usuario TEXT NOT NULL,
@@ -51,7 +51,7 @@ export const setupDatabase = async () => {
         FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
         FOREIGN KEY (id_material) REFERENCES materiales(id_material)
       );
-
+      
       CREATE TABLE IF NOT EXISTS materiales (
         id_material INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre_material TEXT NOT NULL,
@@ -66,7 +66,49 @@ export const setupDatabase = async () => {
     console.error("Error al crear las tablas:", error);
     throw error;
   } finally {
-    await db.closeAsync();
+    await db.closeAsync(); // Cierra la conexión con la base de datos
+  }
+};
+
+// Función para insertar un registro de reciclaje
+export const insertRegistroReciclaje = (idUsuario, idMaterial, cantidad, fecha, puntos, foto) => {
+  openDatabase().then(db => {
+    db.execAsync(tx => {
+      tx.executeSql(
+        'INSERT INTO registro_reciclaje (id_usuario, id_material, cantidad, fecha, puntos, foto) VALUES (?, ?, ?, ?, ?, ?)',
+        [idUsuario, idMaterial, cantidad, fecha.toISOString(), puntos, foto],
+        (_, result) => {
+          console.log('Registro insertado:', result);
+        },
+        (_, error) => {
+          console.error('Error al insertar el registro:', error);
+        }
+      );
+    });
+  }).catch(error => {
+    console.error('Error al abrir la base de datos:', error);
+  });
+};
+
+//ver tablas
+
+export const fetchRegistroReciclaje = async () => {
+  try {
+    const db = await openDatabase();
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM registro_reciclaje',
+        [],
+        (_, { rows }) => {
+          console.log('Registros:', rows._array);
+        },
+        (_, error) => {
+          console.error('Error al obtener los registros:', error);
+        }
+      );
+    });
+  } catch (error) {
+    console.error('Error al abrir la base de datos:', error);
   }
 };
 

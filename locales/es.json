@@ -27,6 +27,12 @@
     "quantity":"cantidad en kg"
     
     
+  },
+
+  "setting":{
+    "setting":"Ajustes",
+    "profile":"Perfil",
+    "exit":"salir"
   }
 }
 

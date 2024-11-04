@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity,ScrollView} from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity, ScrollView,Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import openDatabase, { insertRegistroReciclaje, setupDatabase } from '../database/database';
 
 const Forms = () => {
   const route = useRoute();
@@ -14,7 +15,7 @@ const Forms = () => {
   const [descripcion] = useState(material?.descripcion || '');
   const [cantidad, setCantidad] = useState('');
   const [fecha] = useState(new Date());
-  const [puntos, setPuntos] = useState('');
+  const [puntos] = useState(10); // Reemplaza con lógica real para calcular puntos
   const [foto, setFoto] = useState(material?.Foto || null);
 
   const pickImage = async () => {
@@ -42,16 +43,31 @@ const Forms = () => {
     }
   };
 
+  setupDatabase();
+
   const handleSubmit = () => {
+    const usuarioId = 'some-user-id'; // Cambia a un valor real cuando lo tengas
+    const materialId = idMaterial;
+    const cantidadReciclada = cantidad;
+    const fechaReciclaje = fecha;
+    const puntosAsignados = puntos;
+    const fotoReciclaje = foto;
+
     console.log({
-      idUsuario,
-      idMaterial,
-      cantidad,
-      fecha,
-      puntos,
-      foto,
+      usuarioId,
+      materialId,
+      cantidadReciclada,
+      fechaReciclaje,
+      puntosAsignados, 
+      fotoReciclaje,
     });
+
+    insertRegistroReciclaje(usuarioId, materialId, cantidadReciclada, fechaReciclaje, puntosAsignados, fotoReciclaje);
+    Alert.alert('Datos guardados con éxito');
+   // fetchRegistroReciclaje();
   };
+  
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -59,20 +75,8 @@ const Forms = () => {
 
       {foto && <Image source={{ uri: foto }} style={styles.image} />}
 
-      {/* ID Usuario (opcional) */}
-      {/* 
-      <TextInput
-        style={styles.input}
-        placeholder="ID Usuario"
-        value={idUsuario}
-        onChangeText={setIdUsuario}
-        keyboardType="numeric"
-      />
-      */}
-
       <Text style={styles.title}>{idMaterial}</Text>
       <Text style={styles.date}>{fecha.toLocaleDateString()}</Text>
-
       <Text style={styles.date}>{descripcion}</Text>
 
       <TextInput
@@ -82,15 +86,6 @@ const Forms = () => {
         onChangeText={setCantidad}
         keyboardType="numeric"
       />
-{/*
-      <TextInput
-        style={styles.input}
-        placeholder="Puntos"
-        value={puntos}
-        onChangeText={setPuntos}
-        keyboardType="numeric"
-      />
-*/}
 
       <TouchableOpacity style={styles.button} onPress={pickImage}>
         <Text style={styles.buttonText}>Seleccionar Foto</Text>
@@ -103,14 +98,14 @@ const Forms = () => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Enviar</Text>
       </TouchableOpacity>
-      </ScrollView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1, // Permite que el contenido se expanda
-    padding: 2,
+    flexGrow: 1,
+    padding: 20,
     backgroundColor: '#fff',
   },
   title: {
@@ -125,10 +120,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-  },
-  value: {
-    fontSize: 18,
-    marginBottom: 10,
   },
   date: {
     fontSize: 16,

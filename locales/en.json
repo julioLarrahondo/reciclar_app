@@ -25,6 +25,12 @@
     "paper": "Paper",
     "record": "recycling record",
     "quantity":"quantity in kg"
+  },
+  "setting":{
+    "setting":"setting",
+    "profile":"profile",
+    "exit":"exit"
   }
 }
+
 
