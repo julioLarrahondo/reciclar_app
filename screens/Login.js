@@ -44,21 +44,21 @@ export default function Component({ onLogin }) {
         email,
         password
       });
-
+  
       if (response.data.user) {
         const userId = response.data.user.id;
         console.log('Login successful. User ID:', userId);
-        
-        onLogin();
-        navigation.navigate('Inicio', { userId });
+  
+        onLogin(userId); // Pasamos userId al App.js
       } else {
-        Alert.alert('Error', 'Incorrect credentials or missing user ID. Please try again.');
+        Alert.alert('Error', 'Credenciales incorrectas o ID de usuario faltante.');
       }
     } catch (error) {
       console.error('Error during login:', error);
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Algo salió mal. Por favor, intenta nuevamente.');
     }
   };
+  
 
   const handleGoogleLogin = () => {
     promptAsync();

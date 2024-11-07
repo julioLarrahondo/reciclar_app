@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet, SafeAreaView, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
-import * as Localization from 'expo-localization'; 
-import { useRoute } from '@react-navigation/native';
+import * as Localization from 'expo-localization';
 
-const InicioScreen = () => {
+const Inicio = ({ userId }) => {
   const [userData, setUserData] = useState(null);
-  const [newsData, setNewsData] = useState([]); 
+  const [newsData, setNewsData] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [loadingNews, setLoadingNews] = useState(true); 
-  const route = useRoute();
-  const { userId } = route.params || {}; // 
+  const [loadingNews, setLoadingNews] = useState(true);
   const userLanguage = Localization.locale.split('-')[0];
 
   const fetchUserData = async () => {
@@ -37,7 +34,7 @@ const InicioScreen = () => {
           q: 'reciclar',
           language: userLanguage,
           pageSize: 10,
-          apiKey: 'c99df673b9a04edd89fa65ba6b2be921',
+          apiKey: 'TU_API_KEY', // Asegúrate de manejar tu API Key de forma segura
         },
       });
       if (response.data.articles) {
@@ -54,10 +51,15 @@ const InicioScreen = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchUserData();
-      await fetchNewsData();
+      if (userId) {
+        await fetchUserData();
+        await fetchNewsData();
+      } else {
+        console.log('Esperando a que userId esté disponible...');
+        // No cambiamos el estado de carga aquí
+      }
     };
-    
+
     fetchData();
   }, [userId]);
 
@@ -76,7 +78,6 @@ const InicioScreen = () => {
         {userData && (
           <Text style={styles.welcome}>Bienvenido, {userData.nombres} {userData.apellidos}</Text>
         )}
-
         <View style={styles.circleButtons}>
           {[...Array(4)].map((_, i) => (
             <View key={i} style={styles.circleButton} />
@@ -116,6 +117,7 @@ const InicioScreen = () => {
   );
 };
 
+// **Define `styles` antes de la exportación del componente**
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,4 +187,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InicioScreen;
+export default Inicio;
